@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "17d7598e-ab68-4de2-87ee-dfb3d640177a",
+		"name": "Entrega 1",
+		"description": "Resumen\n\nConjunto de endpoints para la Entrega 1, desplegados en AWS Elastic Beanstalk. Incluye operaciones de salud del servicio y gestión de listas negras (Blacklists), como búsqueda por email y creación de ítems.\n\nContenido\n\n- Carpeta Blacklists\n  - Buscar email (GET): consulta de un correo en la lista/servicio.\n  - Creación item (POST): alta de un nuevo elemento en la lista/servicio.\n- ping/pong (GET /): verificación de salud del servicio (liveness).\n\nBuenas prácticas\n\n- Usa variables de entorno para la URL base (por ejemplo, {{baseUrl}}) y credenciales (por ejemplo, {{token_dev}}) en lugar de valores literales.\n- Mantén ejemplos y tests actualizados para permitir su ejecución en CI/CD con el Collection Runner o Monitors.\n- Gestiona secretos con el entorno adecuado y evita exponerlos en descripciones o ejemplos.\n- Aprovecha scripts de pruebas para validar códigos de estado y esquemas de respuesta.\n\nCómo ejecutar\n\n1) Selecciona el entorno adecuado (Developer Environments) y define variables como:\n   - baseUrl = http://devops-entrega1-env-1.eba-tmpqijge.us-east-2.elasticbeanstalk.com\n   - token_dev = <token>\n2) Ejecuta peticiones individuales desde la colección o usa el Runner para correr la carpeta Blacklists.\n3) Verifica respuestas en la consola y ajusta variables si es necesario.\n4) Para monitoreo, crea un Monitor programado sobre esta colección.\n\nNotas\n\n- Los endpoints no autenticados (como /) pueden usarse para health checks.\n- Si recibes errores 5xx, revisa el estado del entorno de Elastic Beanstalk y los logs de instancia.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2390771"
+	},
+	"item": [
+		{
+			"name": "Blacklists",
+			"item": [
+				{
+					"name": "Buscar email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5MTA3NTAyNyIsImV4cCI6MTcyOTE4MDc3N30.2mGqEH_n7AeFHCfGBR9XPv2prxqBCVVlpC-9TRQ8ouA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/blacklists/test11@gmail.com",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"blacklists",
+								"test11@gmail.com"
+							]
+						},
+						"description": "Propósito\n\nBúsqueda de un usuario por correo electrónico en el servicio. Permite validar existencia y obtener detalles asociados al email.\n\nMétodo y URL\n\n- Método: GET\n    \n- URL: {baseUrl}/blacklists/email\n    \n\nParámetros\n\n- email (string, requerido): correo a buscar. Se envía como parámetro de consulta, por ejemplo: [test11@gmail.com](https://mailto:test11@gmail.com)\n    \n\nHeaders/Autenticación\n\n- Autenticación: según entorno (por ejemplo, Bearer {{token_dev}}) si la API lo requiere.\n    \n- Content-Type: application/json (si corresponde).\n    \n\nRespuestas esperadas\n\n- 200 OK — Coincidencias encontradas.  \n    Cuerpo: lista de usuarios o un objeto de usuario.\n    \n- 204 No Content — Sin coincidencias para el correo.\n    \n- 400 Bad Request — Parámetro query faltante o malformado.\n    \n- 401/403 — No autorizado/prohibido si falta o es inválido el token.\n    \n- 5xx — Error del servidor.\n    \n\nEjemplos\n\n- Solicitud: GET {baseUrl}/blacklists/[test11@gmail.com](https://mailto:test11@gmail.com)\n    \n- Respuesta 200:  \n    {  \n    \"blocked_reason\": \"motivo por el que fue agregado\",  \n    \"exist\": true  \n    }\n    \n\nNotas de uso\n\n- Utiliza el entorno activo para resolver {baseUrl} y credenciales.\n    \n- Útil para validaciones previas a creación de cuentas o para autocompletar.\n    \n- Revisa la Consola de Postman para depurar errores de red o autenticación."
+					},
+					"response": []
+				},
+				{
+					"name": "Creación item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5MTA3NTAyNyIsImV4cCI6MTcyOTE4MDc3N30.2mGqEH_n7AeFHCfGBR9XPv2prxqBCVVlpC-9TRQ8ouA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test11@gmail.com\",\r\n    \"app_uuid\": \"bf8792d2-3097-11ee-be56-0242ac120002\",\r\n    \"blocked_reason\": \"motivo por el que fue agregado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/blacklists",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"blacklists"
+							]
+						},
+						"description": "Propósito\n\nCrear un nuevo ítem (recurso) en el servicio. Ideal para operaciones de alta en flujos CRUD.\n\nMétodo y URL\n\n- Método: POST\n    \n- URL: {baseUrl}/blacklists\n    \n\nHeaders/Autenticación\n\n- Autenticación: Bearer {{token_dev}} (si la API lo requiere).\n    \n- Content-Type: application/json\n    \n\nBody\n\n- JSON con los campos del ítem a crear. Ejemplo mínimo:  \n    {  \n    \"email\": \"[test11@gmail.com](https://mailto:test11@gmail.com)\",  \n    \"app_uuid\": \"bf8792d2-3097-11ee-be56-0242ac120002\",  \n    \"blocked_reason\": \"motivo por el que fue agregado\"  \n    }\n    \n\nRespuestas esperadas\n\n- 201 Created — Item created.  \n    Cuerpo: objeto del ítem creado con su identificador.\n    \n- 400 Bad Request — Datos faltantes o inválidos.\n    \n- 401/403 — No autorizado/prohibido si falta o es inválido el token.\n    \n- 409 Conflict — Conflicto por duplicado u otra restricción.\n    \n- 5xx — Error del servidor.\n    \n\nEjemplos\n\n- Solicitud:  \n    POST {baseUrl}/items  \n    Body:  \n    {  \n    \"email\": \"[test11@gmail.com](https://mailto:test11@gmail.com)\",  \n    \"app_uuid\": \"bf8792d2-3097-11ee-be56-0242ac120002\",  \n    \"blocked_reason\": \"motivo por el que fue agregado\"  \n    }\n    \n- Respuesta 201:  \n    {  \n    \"message\": \"Item created\"  \n    }\n    \n\nNotas de uso\n\n- Usa variables de entorno para {baseUrl} y credenciales.\n    \n- Valida el esquema del body antes de enviar.\n    \n- Guarda el id devuelto en una variable para su uso en solicitudes posteriores."
+					},
+					"response": []
+				},
+				{
+					"name": "pong",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Propósito  \nEstado de salud de la aplicación.\n\nEndpoint\n\n- Method: GET\n    \n- URL: [http://devops-entrega1-env-1.eba-tmpqijge.us-east-2.elasticbeanstalk.com/](http://devops-entrega1-env-1.eba-tmpqijge.us-east-2.elasticbeanstalk.com/)\n    \n\nAuthentication\n\n- None required.\n    \n\nHeaders\n\n- None required.\n    \n\nQuery Parameters\n\n- None.\n    \n\nExpected Responses\n\n- 200 OK — Service is healthy and responding.  \n    Example body (latest observed):  \n    {\"status\":\"ok\"}\n    \n- 4xx — Client error (e.g., incorrect URL or method).  \n    Example: 404 Not Found if the route is incorrect.\n    \n- 5xx — Server error (application/environment issue).  \n    Example: 503 Service Unavailable when the app or dependencies are down.\n    \n\nUsage Notes\n\n- Idempotent and safe; can be called freely by monitors and load balancers.\n    \n- Intended for health checks only; no side effects.\n    \n\nTroubleshooting\n\n- If 5xx errors occur: check Elastic Beanstalk environment health and instance logs.\n    \n- If timeouts occur: verify networking (security groups, load balancer health, target registration) and DNS resolution.\n    \n- If body differs from expected (e.g., not JSON or missing keys): confirm deployed application version and that the \"/\" route returns the health payload.\n    \n- Use the Postman Console to inspect request/response details and any network errors.\n    \n\nChange Log\n\n- Last successful response observed in Postman: 200 OK with body {\"status\":\"ok\"}."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		}
+	]
+}
