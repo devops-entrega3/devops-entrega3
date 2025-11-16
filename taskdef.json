@@ -5,7 +5,7 @@
   "containerDefinitions": [
     {
       "name": "app",
-      "image": "<IMAGE1_NAME>",
+      "image": "<IMAGE2_NAME>",
       "portMappings": [
         {
           "containerPort": 5000,
