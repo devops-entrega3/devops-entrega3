@@ -121,4 +121,4 @@ def status():
         GET /
         Response: {"status": "ok"}
     """
-    return jsonify({"status": "healthy"}), 200
+    return jsonify({"status": "ok"}), 200

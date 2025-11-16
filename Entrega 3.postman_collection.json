@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "17d7598e-ab68-4de2-87ee-dfb3d640177a",
-		"name": "Entrega 1",
+		"_postman_id": "7344436b-85cf-4dcb-95d6-816fb548de98",
+		"name": "Entrega 3",
 		"description": "Resumen\n\nConjunto de endpoints para la Entrega 1, desplegados en AWS Elastic Beanstalk. Incluye operaciones de salud del servicio y gestión de listas negras (Blacklists), como búsqueda por email y creación de ítems.\n\nContenido\n\n- Carpeta Blacklists\n  - Buscar email (GET): consulta de un correo en la lista/servicio.\n  - Creación item (POST): alta de un nuevo elemento en la lista/servicio.\n- ping/pong (GET /): verificación de salud del servicio (liveness).\n\nBuenas prácticas\n\n- Usa variables de entorno para la URL base (por ejemplo, {{baseUrl}}) y credenciales (por ejemplo, {{token_dev}}) en lugar de valores literales.\n- Mantén ejemplos y tests actualizados para permitir su ejecución en CI/CD con el Collection Runner o Monitors.\n- Gestiona secretos con el entorno adecuado y evita exponerlos en descripciones o ejemplos.\n- Aprovecha scripts de pruebas para validar códigos de estado y esquemas de respuesta.\n\nCómo ejecutar\n\n1) Selecciona el entorno adecuado (Developer Environments) y define variables como:\n   - baseUrl = http://devops-entrega1-env-1.eba-tmpqijge.us-east-2.elasticbeanstalk.com\n   - token_dev = <token>\n2) Ejecuta peticiones individuales desde la colección o usa el Runner para correr la carpeta Blacklists.\n3) Verifica respuestas en la consola y ajusta variables si es necesario.\n4) Para monitoreo, crea un Monitor programado sobre esta colección.\n\nNotas\n\n- Los endpoints no autenticados (como /) pueden usarse para health checks.\n- Si recibes errores 5xx, revisa el estado del entorno de Elastic Beanstalk y los logs de instancia.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2390771"
+		"_exporter_id": "47472012"
 	},
 	"item": [
 		{
