@@ -10,4 +10,8 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "application.py"]
+COPY newrelic.ini newrelic.ini
+
+ENV NEW_RELIC_CONFIG_FILE=newrelic.ini
+
+CMD ["newrelic-admin", "run-program", "python", "application.py"]
